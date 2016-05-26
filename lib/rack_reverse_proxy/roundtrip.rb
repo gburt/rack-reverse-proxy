@@ -190,10 +190,16 @@ module RackReverseProxy
       setup_body
       set_content_length
       set_content_type
+      customize_net_http_request
     end
 
     def setup_response_headers
       replace_location_header
+    end
+
+    def customize_net_http_request
+      return unless options[:customize_net_http_request]
+      options[:customize_net_http_request].call(target_request)
     end
 
     def rack_response
